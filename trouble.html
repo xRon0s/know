@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/trouble.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="image.html">Image</a></li>
+                <li><a href="preparation.html">Preparation</a></li>
+                <li><a href="authority.html">Authority</a></li>
+                <li><a href="web.html">Web</a></li>
+                <li><a href="trouble.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>トラブルシューティング</h1>
+        <ul class="troubleshooting-list">
+            <li>
+                <strong>トラブル: Wi-Fiに接続できない。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li>入力したWi-Fiパスワードが正しいか再確認してください。</li>
+                    <li>ルーターを再起動してみてください。</li>
+                    <li>ターミナルで <code>sudo raspi-config</code> を実行し、「Localisation Options」 -> 「WLAN Country」で日本が設定されているか確認してください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: 日本語入力ができない。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li><code>fcitx-mozc</code>が正しくインストールされているか確認してください。</li>
+                    <li><code>sudo apt install fcitx-mozc -y</code> を再度実行し、インストールを試みてください。</li>
+                    <li>インストール後は、必ずRaspberry Piを再起動して設定を反映させてください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: OSのアップデートに失敗する。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li>安定したインターネット接続があることを確認してください。</li>
+                    <li><code>sudo apt update</code> を実行してパッケージリストを更新してから、<code>sudo apt full-upgrade -y</code> を実行してみてください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: SSH接続ができない。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li>Raspberry PiのIPアドレスが正しいことを <code>ip a</code> コマンドで確認してください。</li>
+                    <li>Raspberry Pi Configuration (<code>sudo raspi-config</code> > 「Interface Options」) でSSHが有効になっているか確認してください。</li>
+                    <li>クライアントPCとRaspberry Piが同じネットワークに接続されていることを確認してください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: ユーザーにsudo権限を付与できない。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li><code>sudo usermod -aG sudo [ユーザー名]</code> のコマンドが正しく入力されているか確認してください。</li>
+                    <li>コマンド実行後、一度ログアウトして再度ログインするか、<code>newgrp sudo</code>コマンドを実行してグループ情報を更新してください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: 画面が映らない、または解像度がおかしい。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li>HDMIケーブルがRaspberry Piとモニターにしっかりと接続されていることを確認してください。</li>
+                    <li>microSDカードをPCで開き、<code>/boot/config.txt</code> ファイルを編集して <code>hdmi_force_hotplug=1</code> の行のコメントアウトを解除してみてください。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>トラブル: microSDカードから起動しない。</strong>
+                <p>シューティング:</p>
+                <ul>
+                    <li>Raspberry Pi Imagerなどのツールを使い、OSイメージがmicroSDカードに正しく書き込まれているか確認してください。</li>
+                    <li>別のmicroSDカードや、別のUSBポートに接続したカードリーダーを試してください。</li>
+                    <li>使用しているACアダプターが、Raspberry Piに必要な電力（モデルによるが5V/3.0A推奨）を供給できているか確認してください。</li>
+                </ul>
+            </li>
+        </ul>
+    </main>
+
+    <script src="js/trouble.js"></script>
+</body>
+</html>

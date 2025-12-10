@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homepage</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/homepage.css">
+</head>
+<body>
+    <div id="opening-animation">
+        <h1>Welcome</h1>
+    </div>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="image.html">Image</a></li>
+                <li><a href="preparation.html">Preparation</a></li>
+                <li><a href="authority.html">Authority</a></li>
+                <li><a href="web.html">Web</a></li>
+                <li><a href="trouble.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h1>Raspberry Pi Server Setup Guide</h1>
+            <p>このサイトは、Raspberry Piを使用してセキュアなWebサーバーを構築するための手順を、備忘録としてまとめたものです。</p>
+        </section>
+        <section>
+            <h2>前提条件</h2>
+            <ul>
+                <li>Raspberry Pi 4 Model B</li>
+                <li>microSDカード (32GB以上推奨)</li>
+                <li>ディスプレイ、キーボード、マウス</li>
+                <li>インターネット接続環境 (有線または無線)</li>
+                <li>作業用PC (SSH接続用)</li>
+            </ul>
+        </section>
+        <section>
+            <h2>ページ一覧</h2>
+            <ul class="page-links">
+                <li><a href="goals.html"><h3>Goals</h3><p>このサーバー構築の最終的な目標を定義します。</p></a></li>
+                <li><a href="image.html"><h3>Image</h3><p>サーバーの全体構成図と通信の流れを視覚化します。</p></a></li>
+                <li><a href="preparation.html"><h3>Preparation</h3><p>OSのインストールから初期設定までを解説します。</p></a></li>
+                <li><a href="authority.html"><h3>Authority</h3><p>ユーザー権限、SSH鍵認証、ファイアウォール設定について解説します。</p></a></li>
+                <li><a href="web.html"><h3>Web</h3><p>Fail2banによるセキュリティ強化とNginxの導入について解説します。</p></a></li>
+                <li><a href="trouble.html"><h3>Troubleshooting</h3><p>構築中によくある問題とその解決策をまとめます。</p></a></li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="js/homepage.js"></script>
+</body>
+</html>

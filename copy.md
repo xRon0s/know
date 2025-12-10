@@ -1,0 +1,316 @@
+[homepage.html , homepage.css , homepage.js]
+  |
+  |--[goals.html , goals.css goals.js]
+  |--[preparation.html , preparation.css , preparation.js]
+  |--[authority.html , authority.css , authority.js]
+  |--[Web.html , web.css , web.js]
+  |--[Trouble.html , Trouble.css , Trouble.js]
+  |--[Siv.html , Siv.css , Civ.js]
+
+
+
+
+----------
+◇サイト景観
+ヘッダー有(その他外枠無し)
+コマンド枠(```で囲まれた部分)はそれっぽく
+{
+exsample/exsample.html
+exsample/exsample.css
+exsample/exsample.js
+}の装飾を参考にする。
+
+----------
+◆homepage.html
+<このタグ内はサイト内で非表示, オープニングアニメーションを実施>
+## 前提条件
+
+- 対象 OS とバージョン : Raspberry Pi OS (64-bit) / Debian 11 (bullseye)
+- 実行環境 : ローカル環境 (Raspberry Pi 400)
+- 利用ツール・パッケージ管理手段 : apt, systemd, ufw, fail2ban, nginx
+- ネットワーク条件 : ローカルネットワーク（プライベートIP）
+- httpsの可否 : HTTPS は設定しない (HTTP のみ)
+
+以下のページにおいてUSERNAMEはr23093と読み替える
+   ----        ----
+[各ページへのリンクを表示]
+
+----------
+◆goals.html
+□目標と完成条件
+1.目標
+  ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることで強固なwebサーバーを構築する。
+
+2.完成条件
+  ブラウザで http://[ラズパイのIP] にアクセスし、Welcome to nginx の表記がでる
+
+----------
+◆preparation.html
+□初期設定・環境構築
+1.OS起動
+  Raspberry PiにmicroSDカードを挿し、ディスプレイとモニターに接続して電源を付ける。
+
+2.初期設定
+  初期ウィザードが表示されるためNextをクリックする。
+
+  Set Countryが表示されるため以下の通り設定を変更してNextをクリックする。
+  ---
+  Country : Japan
+  Language : Japanese
+  Timezone : Tokyo
+  ✓Use US keyboard
+  ---
+
+  Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックする。ここでは学籍番号をユーザー名に設定した。
+  ---
+  Enter username : r23093
+  Enter password : PASSWORD
+  Confirm password : PASSWORD
+  ---
+
+  Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックする。
+
+  Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックする。
+
+  Update Softwareの画面では、OSをアップデートするか聞かれるのでNextボタンをクリックします。ここでSkipをクリックするとOSを日本語化するファイルがインストールされない。
+
+  セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。
+
+  右上のWiFiマークから接続するネットワークを選択し、WiFiに接続する。
+
+3.日本語入力
+  この状態のRaspberry Piでは日本語入力ができない。日本語入力のためにFcitx、Mozcをインターネット上からダウンロードしてインストールする。
+  画面上部のLXTerminalアイコンをクリックしてターミナルウィンドウを開き、以下のコマンドを入力する。
+  ```
+  sudo apt update # パッケージリストを最新の状態に更新する
+  sudo apt install fcitx-mozc -y # 日本語入力メソッドFcitxとMozcをインストールする (-yは確認メッセージに自動でyesと答えるオプション)
+  ```
+  インストールが完了したら、ログアウトメニューからRebootを選択し再起動することで設定が反映される。
+
+----------
+◆authority.html
+□権限・鍵認証・ファイアウォール
+1.ユーザー作成
+  今回のサーバー作成においては追加でユーザーを作成する必要が無いため、ユーザーは追加しない。
+
+2.権限
+  デフォルトのrootユーザーを用いる場合、初期からsudo権限を持っているため権限の付与は必要ない。
+  新規のユーザーで環境を作成する場合は以下のコマンドを用いる。
+  ```
+  sudo usermod -aG sudo [ユーザー名] # 既存のユーザーをsudoグループに追加し、管理者権限を付与する
+  ```
+  (確認用コマンド)
+  ```
+  groups [ユーザー名] # ユーザーが所属するグループを確認する
+  # sudoが含まれていることを確認する
+  ```
+
+3.SSH接続
+  左上のラズパイアイコンからPreferences → Raspberry Pi Configuration の順にクリックするとRaspberry Pi Configurationが開くので、Interfacesをクリックし、SSHのトグルスイッチをクリックしてSSH接続を有効化します。
+
+  SSH接続のために、鍵認証を設定します。以下のコマンドでed25519の鍵を生成します。（質問には全てEnterで答える）
+  ```
+  ssh-keygen -t ed25519 # ed25519方式のSSHキーペア（公開鍵と秘密鍵）を生成する
+  ```
+  root直下の.sshフォルダに公開鍵と秘密鍵が生成される。生成した公開鍵を転送・登録するために以下のコマンドを用いる。
+  ```
+  ssh-copy-id -i ~/.ssh/id_ed25519.pub r23093@192.168.1.10 # 公開鍵をリモートホストにコピーして、鍵認証を設定する
+  ```
+  もし、.ssh等などのフォルダ、ファイルが生成されていない場合、以下のコマンド等を用いて認証鍵を配置する。
+  ```
+  mkdir -p ~/.ssh # .sshディレクトリを作成する（-pは親ディレクトリも同時に作成するオプション）
+  cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys # 公開鍵をauthorized_keysファイルに追記する
+  chmod 600 ~/.ssh/authorized_keys # authorized_keysファイルの権限を所有者のみ読み書き可能に設定する
+  ```
+  ブルートフォースアタックを防ぐために、ログインが可能かを確認した後にパスワードでのログインを禁止する。今回は別PCを用いなかったため、自分自身に接続テストする。以下のコマンドを用いてSSH接続を確認する。
+  ```
+  ssh r23093@localhost # 自分自身（localhost）にSSH接続を試みる
+  # 新しいコマンドプロンプトで実行する
+  ssh -p 2222 username@192.168.1.10 # 指定したポート番号でSSH接続を試みる
+  ```
+  問題が無ければ、以下のコマンドを用いてパスワードでのログインを禁止する。
+  **設定ファイル情報**
+  - **保存パス**: `/etc/ssh/sshd_config`
+  - **所有者**: root:root
+  - **権限**: 644 (`-rw-r--r--`)
+  ```
+  sudo nano /etc/ssh/sshd_config # SSHサーバーの設定ファイルを開く
+
+  # 以下を設定
+  Port 2222 # SSHのポート番号を2222に変更
+  PasswordAuthentication no # パスワード認証を無効化
+  PermitRootLogin no # rootユーザーでのログインを禁止
+  ```
+  上記は変更箇所であるため、以下にsshd_configの完全版を提示します。
+  ```
+  # このブロックは、変更後の設定が有効になっている主要な部分を示します。
+  
+  Port 2222                 # SSHのポート番号を2222に変更
+  #AddressFamily any         # (コメントアウト解除や確認: IPv4/IPv6のどちらも許可)
+  ListenAddress 0.0.0.0       # (すべてのインターフェースからの接続を許可)
+  
+  PermitRootLogin no          # rootユーザーでのログインを禁止
+  PasswordAuthentication no   # パスワード認証を無効化
+
+  # 鍵認証を有効化していることを確認
+  PubkeyAuthentication yes
+  
+  # authorized_keysのパスを確認
+  AuthorizedKeysFile      .ssh/authorized_keys
+
+  # Subsystem sftp /usr/lib/ssh/sftp-server # (確認: コメントアウトされていないことを確認)
+  ```
+  設定が完了したら、新しいコマンドプロンプトを開き以下のコマンドで接続テストをする。
+  ```
+  # 接続テスト（ポート番号に合わせて -p をつける）
+  ssh -p 2222 username@192.168.1.10 # 変更後のポート番号でSSH接続を試みる
+  ```
+
+  ssh接続のコマンドを簡略化するために、以下のコマンドを実行し設定ファイルを編集する。
+  ```
+  sudo nano /.ssh/config # SSHクライアントの設定ファイルを開く
+
+  # 以下のように変更
+  Host myserver # 接続のエイリアス名
+  HostName 192.168.1.10 # 接続先ホスト名（IPアドレス）
+  User username # ユーザー名
+  Port 2222 # ポート番号
+  IdentityFile ~/.ssh/id_ed25519 # 使用する秘密鍵のパス
+  ```
+  以下のコマンドを試し、SSH接続ができるか試す。問題が無ければSSH接続は完了している。
+  ```
+  ssh myserver # 設定したエイリアス名でSSH接続を試みる
+  ```
+
+4.ファイアウォール
+  UFWを用いてポート開放の設定をする。以下のコマンドをそれぞれ実行し、UFWをインストールする。
+  ```
+  sudo apt update # パッケージリストを更新
+  sudo apt install ufw # UFW（Uncomplicated Firewall）をインストール
+
+  sudo ufw status # UFWの状態を確認する
+  ```
+  デフォルトの設定として、全てのincomingを拒否しておく。以下のコマンドを用いてincomingの設定を変更する。
+  ```
+  sudo ufw default deny incoming # デフォルトで全ての外部からの受信（incoming）を拒否する
+  ```
+  また、SSH接続とwebサーバーを有効化したいので、以下のコマンドを用いて2222,80,443番のアドレスを開放する。今回は2222番ポートを使用しているため、20番を開放するコマンドでは不十分です。
+  ```
+  sudo ufw allow 2222/tcp # SSH接続のために2222番ポートのTCP通信を許可する
+  sudo ufw allow http # Webサーバーのためにhttp（80番ポート）を許可する
+  sudo ufw allow https # Webサーバーのためにhttps（443番ポート）を許可する
+  ```
+  設定が完了したら以下のコマンドを用いて設定を有効化し状態を確認する。
+  ```
+  sudo ufw enable # UFWを有効化する
+  sudo ufw status verbose # UFWの詳細な状態（ルール一覧など）を表示する
+  ```
+
+----------
+◆web.html
+□ハードニング
+1.概要
+  ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることでサーバーを強固なものに構築します。Fail2ba以外は環境構築の手順で設定したので、Fail2banの設定を行います。
+
+2.設定
+  以下のコマンドを用いてFail2banをインストールします。
+  **設定ファイル情報**
+  - **保存パス**: `/etc/fail2ban/jail.local`
+  - **所有者**: root:root
+  - **権限**: 644 (`-rw-r--r--`)
+  ```
+  # Fail2banのインストール
+  sudo apt update # パッケージリストを更新
+  sudo apt install fail2ban -y # Fail2banをインストール
+
+  # SSH用設定ファイル作成
+  sudo nano /etc/fail2ban/jail.local # Fail2banのローカル設定ファイルを作成・編集する
+  ```
+  また、jail.localの内容を以下のように設定します。
+  ```
+  [DEFAULT]
+  bantime  = 1h # BANする期間を1時間に設定
+  findtime = 10m # 試行を検出する期間を10分に設定
+  maxretry = 5 # 期間内の最大試行回数を5回に設定
+
+  [sshd]
+  enabled  = true # SSHDに対する監視を有効化
+  port     = 2222 # 監視するSSHのポート番号
+  logpath  = /var/log/auth.log # 監視するログファイルのパス
+  backend  = systemd # ログの監視方法
+  ```
+  設定の変更が完了したら、以下のコマンドで設定を適用し状態を確認します。
+  ```
+  # Fail2banの有効化
+  sudo systemctl restart fail2ban # Fail2banサービスを再起動して設定を反映させる
+
+  # 状態確認
+  sudo fail2ban-client status sshd # SSHDに対するFail2banの状態を確認する
+  ```
+  また、以下のコマンドで永続化する。
+  ```
+  sudo systemctl enable fail2ban
+  ```
+
+3.確認
+  Webサーバー上で内容が表示されるか確認します。今回はNginxを用いて確認します。以下のコマンドでNginxをインストールします。
+  ```
+  # Webサーバー(Nginx)のインストール
+  sudo apt update # パッケージリストを更新
+  sudo apt install nginx -y # Nginxをインストール
+  sudo systemctl enable nginx # OS起動時にNginxが自動で起動するように設定
+  sudo systemctl start nginx # Nginxサービスを開始
+
+  sudo systemctl start nginx
+  sudo systemctl enable nginx # 永続化
+  ```
+  インストールが完了したら、ブラウザで http://[ラズパイのIP] にアクセスし、Welcome to nginx の表記がでるか確認します。
+
+----------
+◆Trouble.html
+□トラブルシューティング
+1.  **トラブル:** Wi-Fiに接続できない。
+    **シューティング:**
+    *   入力したWi-Fiパスワードが正しいか再確認してください。
+    *   ルーターを再起動してみてください。
+    *   ターミナルで `sudo raspi-config` を実行し、「Localisation Options」 -> 「WLAN Country」で日本が設定されているか確認してください。
+
+2.  **トラブル:** 日本語入力ができない。
+    **シューティング:**
+    *   `fcitx-mozc`が正しくインストールされているか確認してください。
+    *   `sudo apt install fcitx-mozc -y` を再度実行し、インストールを試みてください。
+    *   インストール後は、必ずRaspberry Piを再起動して設定を反映させてください。
+
+3.  **トラブル:** OSのアップデートに失敗する。
+    **シューティング:**
+    *   安定したインターネット接続があることを確認してください。
+    *   `sudo apt update` を実行してパッケージリストを更新してから、`sudo apt full-upgrade -y` を実行してみてください。
+
+4.  **トラブル:** SSH接続ができない。
+    **シューティング:**
+    *   Raspberry PiのIPアドレスが正しいことを `ip a` コマンドで確認してください。
+    *   Raspberry Pi Configuration (`sudo raspi-config` > 「Interface Options」) でSSHが有効になっているか確認してください。
+    *   クライアントPCとRaspberry Piが同じネットワークに接続されていることを確認してください。
+
+5.  **トラブル:** ユーザーにsudo権限を付与できない。
+    **シューティング:**
+    *   `sudo usermod -aG sudo [ユーザー名]` のコマンドが正しく入力されているか確認してください。
+    *   コマンド実行後、一度ログアウトして再度ログインするか、`newgrp sudo`コマンドを実行してグループ情報を更新してください。
+
+6.  **トラブル:** 画面が映らない、または解像度がおかしい。
+    **シューティング:**
+    *   HDMIケーブルがRaspberry Piとモニターにしっかりと接続されていることを確認してください。
+    *   microSDカードをPCで開き、`/boot/config.txt` ファイルを編集して `hdmi_force_hotplug=1` の行のコメントアウトを解除してみてください。
+
+7.  **トラブル:** microSDカードから起動しない。
+    **シューティング:**
+    *   Raspberry Pi Imagerなどのツールを使い、OSイメージがmicroSDカードに正しく書き込まれているか確認してください。
+    *   別のmicroSDカードや、別のUSBポートに接続したカードリーダーを試してください。
+    *   使用しているACアダプターが、Raspberry Piに必要な電力（モデルによるが5V/3.0A推奨）を供給できているか確認してください。
+
+----------
+◆Siv.html
+□参考資料
+実験手順書：https://brawny-slicer-af3.notion.site/2025-1-ver-2-1-2b85e5dbbc3e80c390eac85f154ccdb7
+日本語入力：https://www.indoorcorgielec.com/resources/raspberry-pi/raspberry-pi-input-japanese/
+SSH接続：https://raspi-school.com/ssh/

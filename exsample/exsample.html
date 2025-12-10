@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Developer Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0a0e27;
+            --bg-secondary: #141b3d;
+            --accent: #00d9ff;
+            --accent-dim: #0099cc;
+            --text-primary: #e0e6ed;
+            --text-secondary: #8b95a8;
+            --border: #1e2847;
+            --code-bg: #0d1228;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Opening Animation */
+        #opening {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-primary);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease, visibility 0.8s ease;
+        }
+
+        #opening.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader {
+            width: 80px;
+            height: 80px;
+            border: 3px solid var(--border);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .opening-text {
+            margin-top: 30px;
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent);
+            opacity: 0;
+            animation: fadeInText 0.8s ease 0.3s forwards;
+        }
+
+        .opening-subtext {
+            margin-top: 10px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            opacity: 0;
+            animation: fadeInText 0.8s ease 0.6s forwards;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes fadeInText {
+            to { opacity: 1; }
+        }
+
+        /* Fixed Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(10, 14, 39, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
+            box-shadow: 0 4px 20px rgba(0, 217, 255, 0.1);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            box-shadow: 0 0 20px var(--accent);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        nav {
+            margin-left: auto;
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--accent);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 70px;
+            padding: 60px 40px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: var(--text-primary);
+            position: relative;
+            display: inline-block;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent);
+        }
+
+        .intro {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+
+        /* Content Sections */
+        section {
+            margin-bottom: 60px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        section:nth-child(2) { animation-delay: 0.2s; }
+        section:nth-child(3) { animation-delay: 0.4s; }
+        section:nth-child(4) { animation-delay: 0.6s; }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 25px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        h2::before {
+            content: '';
+            width: 4px;
+            height: 32px;
+            background: var(--accent);
+        }
+
+        /* Code Block Style */
+        .code-block {
+            background: var(--code-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .code-header {
+            background: var(--bg-secondary);
+            padding: 12px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .code-title {
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .code-dots {
+            display: flex;
+            gap: 8px;
+        }
+
+        .code-dots span {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--border);
+        }
+
+        .code-dots span:nth-child(1) { background: #ff5f56; }
+        .code-dots span:nth-child(2) { background: #ffbd2e; }
+        .code-dots span:nth-child(3) { background: #27c93f; }
+
+        .code-content {
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: #a9b7c6;
+            overflow-x: auto;
+        }
+
+        .code-content .comment { color: #629755; }
+        .code-content .keyword { color: #cc7832; }
+        .code-content .string { color: #6a8759; }
+        .code-content .function { color: #ffc66d; }
+
+        /* Config Block Style */
+        .config-block {
+            background: var(--bg-secondary);
+            border-left: 4px solid var(--accent);
+            padding: 25px;
+            border-radius: 4px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .config-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--accent);
+            opacity: 0.3;
+        }
+
+        .config-title {
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+
+        .config-content {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+        }
+
+        /* Card Style */
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 20px 0;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 217, 255, 0.15);
+        }
+
+        /* Floating Decoration */
+        .decoration {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .decoration-1 {
+            top: 10%;
+            right: -150px;
+            background: radial-circle at center, var(--accent-dim) 0%, transparent 70%);
+            opacity: 0.1;
+        }
+
+        .decoration-2 {
+            bottom: 20%;
+            left: -150px;
+            background: radial-circle at center, var(--accent) 0%, transparent 70%);
+            opacity: 0.08;
+        }
+
+        /* Scroll Indicator */
+        .scroll-indicator {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            height: 3px;
+            background: var(--accent);
+            width: 0%;
+            transition: width 0.1s ease;
+            z-index: 999;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 0 20px;
+            }
+
+            nav {
+                display: none;
+            }
+
+            main {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Opening Animation -->
+    <div id="opening">
+        <div class="loader"></div>
+        <div class="opening-text">Developer Portal</div>
+        <div class="opening-subtext">システムを初期化中...</div>
+    </div>
+
+    <!-- Scroll Progress Indicator -->
+    <div class="scroll-indicator"></div>
+
+    <!-- Fixed Header -->
+    <header>
+        <div class="logo">DEVPORTAL</div>
+        <nav>
+            <a href="#docs">ドキュメント</a>
+            <a href="#config">設定</a>
+            <a href="#examples">サンプル</a>
+            <a href="#about">について</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <h1>開発者向けポータル</h1>
+        <p class="intro">
+            このサイトは開発者のためのリソースハブです。コマンド、設定ファイル、コードサンプルを効率的に管理できます。
+        </p>
+
+        <section id="docs">
+            <h2>コマンドプロンプト</h2>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">terminal.sh</span>
+                    <div class="code-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="code-content">
+<span class="comment"># サーバーの起動</span>
+npm <span class="keyword">run</span> <span class="function">dev</span>
+
+<span class="comment"># ビルドの実行</span>
+npm <span class="keyword">run</span> <span class="function">build</span>
+
+<span class="comment"># テストの実行</span>
+npm <span class="keyword">run</span> <span class="function">test</span> -- --coverage
+                </div>
+            </div>
+        </section>
+
+        <section id="config">
+            <h2>設定ファイル</h2>
+            <div class="config-block">
+                <div class="config-title">config.json</div>
+                <div class="config-content">{
+  "server": {
+    "port": 3000,
+    "host": "localhost"
+  },
+  "database": {
+    "type": "postgresql",
+    "host": "db.example.com",
+    "port": 5432
+  },
+  "features": {
+    "enableCache": true,
+    "enableLogging": true
+  }
+}</div>
+            </div>
+
+            <div class="config-block">
+                <div class="config-title">.env</div>
+                <div class="config-content">NODE_ENV=production
+DATABASE_URL=postgresql://user:pass@localhost:5432/db
+API_KEY=your_api_key_here
+SECRET_KEY=your_secret_key_here</div>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2>コードサンプル</h2>
+            <div class="code-block">
+                <div class="code-header">
+                    <span class="code-title">example.js</span>
+                    <div class="code-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+                </div>
+                <div class="code-content">
+<span class="keyword">const</span> <span class="function">fetchData</span> = <span class="keyword">async</span> (url) => {
+  <span class="keyword">try</span> {
+    <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="function">fetch</span>(url);
+    <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="function">json</span>();
+    <span class="keyword">return</span> data;
+  } <span class="keyword">catch</span> (error) {
+    console.<span class="function">error</span>(<span class="string">'エラーが発生しました:'</span>, error);
+  }
+};
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>プロジェクト情報</h2>
+            <div class="card">
+                <h3 style="margin-bottom: 15px; color: var(--accent);">このポータルについて</h3>
+                <p style="color: var(--text-secondary); line-height: 1.8;">
+                    開発効率を最大化するために設計されたポータルサイトです。
+                    コマンドライン操作、設定ファイルの管理、コードスニペットの共有を
+                    シームレスに行うことができます。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Decorative Elements -->
+    <div class="decoration decoration-1"></div>
+    <div class="decoration decoration-2"></div>
+
+    <script>
+        // Opening Animation
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('opening').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Scroll Progress Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.querySelector('.scroll-indicator').style.width = scrolled + '%';
+        });
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Parallax Effect for Decorations
+        window.addEventListener('mousemove', (e) => {
+            const decorations = document.querySelectorAll('.decoration');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            decorations.forEach((decoration, index) => {
+                const speed = (index + 1) * 20;
+                const xMove = (x - 0.5) * speed;
+                const yMove = (y - 0.5) * speed;
+                decoration.style.transform = `translate(${xMove}px, ${yMove}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

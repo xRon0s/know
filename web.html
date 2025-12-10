@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Hardening</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/web.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="image.html">Image</a></li>
+                <li><a href="preparation.html">Preparation</a></li>
+                <li><a href="authority.html">Authority</a></li>
+                <li><a href="web.html">Web</a></li>
+                <li><a href="trouble.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>ハードニング</h1>
+        <section>
+            <h2>1. 概要</h2>
+            <p>ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることでサーバーを強固なものに構築します。Fail2ban以外は環境構築の手順で設定したので、Fail2banの設定を行います。</p>
+        </section>
+        <section>
+            <h2>2. 設定</h2>
+            <p>以下のコマンドを用いてFail2banをインストールします。</p>
+            <pre><code><span class="code-comment"># Fail2banのインストール</span>
+sudo apt update <span class="code-comment"># パッケージリストを更新</span>
+sudo apt install fail2ban -y <span class="code-comment"># Fail2banをインストール</span></code></pre>
+            <p>設定は、<code>/etc/fail2ban/jail.conf</code>を直接編集するのではなく、<code>/etc/fail2ban/jail.local</code>というファイルを作成して行います。<code>.local</code>ファイルの設定が優先されるため、アップデートで設定が上書きされるのを防げます。</p>
+            <pre><code><span class="code-comment"># SSH用設定ファイル作成</span>
+sudo nano /etc/fail2ban/jail.local <span class="code-comment"># Fail2banのローカル設定ファイルを作成・編集する</span></code></pre>
+            <p>また、jail.localの内容を以下のように設定します。</p>
+            <pre><code>[DEFAULT]
+<span class="code-comment"># BANする期間、試行を検出する期間、最大試行回数</span>
+bantime  = 1h
+findtime = 10m
+maxretry = 5
+
+[sshd]
+<span class="code-comment"># sshdに対するルールを有効化</span>
+enabled  = true
+<span class="code-comment"># 変更したSSHポートを指定</span>
+port     = 2222
+<span class="code-comment"># 監視するログファイルのパス</span>
+logpath  = /var/log/auth.log
+<span class="code-comment"># ログの監視方法 (Debian/Raspberry Pi OSではsystemdが一般的)</span>
+backend  = systemd</code></pre>
+            <p>設定の変更が完了したら、以下のコマンドで設定を適用し状態を確認します。</p>
+            <pre><code><span class="code-comment"># Fail2banの有効化</span>
+sudo systemctl restart fail2ban <span class="code-comment"># Fail2banサービスを再起動して設定を反映させる</span>
+
+<span class="code-comment"># 状態確認</span>
+sudo fail2ban-client status sshd <span class="code-comment"># SSHDに対するFail2banの状態を確認する</span></code></pre>
+        </section>
+        <section>
+            <h2>3. 確認</h2>
+            <p>Webサーバー上で内容が表示されるか確認します。今回はNginxを用いて確認します。以下のコマンドでNginxをインストールします。</p>
+            <pre><code><span class="code-comment"># Webサーバー(Nginx)のインストール</span>
+sudo apt update <span class="code-comment"># パッケージリストを更新</span>
+sudo apt install nginx -y <span class="code-comment"># Nginxをインストール</span>
+sudo systemctl enable nginx <span class="code-comment"># OS起動時にNginxが自動で起動するように設定</span>
+sudo systemctl start nginx <span class="code-comment"># Nginxサービスを開始</span></code></pre>
+            <p>インストールが完了したら、ブラウザで <code>http://[ラズパイのIP]</code> にアクセスし、"Welcome to nginx" の表記がでるか確認します。</p>
+        </section>
+    </main>
+
+    <script src="js/web.js"></script>
+</body>
+</html>

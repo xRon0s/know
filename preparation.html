@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preparation</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/preparation.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="image.html">Image</a></li>
+                <li><a href="preparation.html">Preparation</a></li>
+                <li><a href="authority.html">Authority</a></li>
+                <li><a href="web.html">Web</a></li>
+                <li><a href="trouble.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>初期設定・環境構築</h1>
+        <section>
+            <h2>1. OS起動</h2>
+            <p>Raspberry PiにmicroSDカードを挿し、ディスプレイとモニターに接続して電源を付ける。</p>
+        </section>
+        <section>
+            <h2>2. 初期設定</h2>
+            <p>初期ウィザードが表示されるためNextをクリックする。</p>
+            <p>Set Countryが表示されるため以下の通り設定を変更してNextをクリックする。</p>
+            <pre><code>Country : Japan
+Language : Japanese
+Timezone : Tokyo
+✓Use US keyboard</code></pre>
+            <p>Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックする。ここでは学籍番号をユーザー名に設定した。</p>
+            <pre><code>Enter username : r23093
+Enter password : PASSWORD
+Confirm password : PASSWORD</code></pre>
+            <p>Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックする。</p>
+            <p>Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックする。</p>
+            <p>Update Softwareの画面では、OSをアップデートするか聞かれるのでNextボタンをクリックします。ここでSkipをクリックするとOSを日本語化するファイルがインストールされない。</p>
+            <p>セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。</p>
+            <p>右上のWiFiマークから接続するネットワークを選択し、WiFiに接続する。</p>
+        </section>
+        <section>
+            <h2>3. 日本語入力</h2>
+            <p>この状態のRaspberry Piでは日本語入力ができない。日本語入力のためにFcitx、Mozcをインターネット上からダウンロードしてインストールする。
+            画面上部のLXTerminalアイコンをクリックしてターミナルウィンドウを開き、以下のコマンドを入力する。</p>
+            <pre><code>sudo apt update <span class="code-comment"># パッケージリストを最新の状態に更新する</span>
+sudo apt install fcitx-mozc -y <span class="code-comment"># 日本語入力メソッドFcitxとMozcをインストールする (-yは確認メッセージに自動でyesと答えるオプション)</span></code></pre>
+            <p>インストールが完了したら、ログアウトメニューからRebootを選択し再起動することで設定が反映される。</p>
+        </section>
+    </main>
+
+    <script src="js/preparation.js"></script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/image.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="homepage.html">Home</a></li>
+                <li><a href="goals.html">Goals</a></li>
+                <li><a href="image.html">Image</a></li>
+                <li><a href="preparation.html">Preparation</a></li>
+                <li><a href="authority.html">Authority</a></li>
+                <li><a href="web.html">Web</a></li>
+                <li><a href="trouble.html">Troubleshooting</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>全体構成図とポート設計</h1>
+        <section>
+            <h2>構成図</h2>
+            <div class="mermaid">
+graph TD
+    subgraph "インターネット (外部)"
+        Client[クライアントPC]
+    end
+
+    subgraph "ホームネットワーク"
+        Router[ルーター]
+        subgraph "Raspberry Pi (サーバー)"
+            UFW[UFW ファイアウォール]
+            subgraph "サービス"
+                SSH[sshd ポート: 2222]
+                Nginx[Nginx ポート: 80, 443]
+            end
+            Fail2ban[Fail2ban]
+        end
+    end
+
+    Client -- "SSH接続" -->|ポート: 2222| Router
+    Client -- "Webアクセス" -->|ポート: 80, 443| Router
+
+    Router --> UFW
+
+    UFW -- "許可" --> SSH
+    UFW -- "許可" --> Nginx
+
+    Fail2ban -- "ログ監視" --> SSH
+    Fail2ban -- "不正アクセスをブロック" --> UFW
+            </div>
+            <p style="text-align: center; font-size: 0.9em; color: #666;">(この図はMermaid.jsによって描画されています)</p>
+        </section>
+        <section>
+            <h2>通信経路とポート設計</h2>
+            <h3>外部→内部の通信経路:</h3>
+            <p>インターネット上のクライアントPCから、家庭内のルーターを経由してRaspberry Pi上の各サービスにアクセスします。すべての通信はまずUFWファイアウォールを通過します。</p>
+            
+            <h3>使用ポート:</h3>
+            <ul>
+                <li><strong>SSH (sshd):</strong> <code>2222/tcp</code>
+                    <p>外部からのリモートメンテナンスに使用します。デフォルトの22番ポートから変更することで、自動化された攻撃のリスクを低減します。</p>
+                </li>
+                <li><strong>Web (Nginx):</strong> <code>80/tcp</code> (HTTP), <code>443/tcp</code> (HTTPS)
+                    <p>Webサイトの公開に使用します。</p>
+                </li>
+            </ul>
+
+            <h3>コンポーネント関係:</h3>
+            <ul>
+                <li><strong>UFW (Uncomplicated Firewall):</strong>
+                    <p>ファイアウォールとして機能し、許可されたポート(<code>2222</code>, <code>80</code>, <code>443</code>)以外の外部からの不正な通信をすべて拒否(<code>deny incoming</code>)します。</p>
+                </li>
+                <li><strong>Fail2ban:</strong>
+                    <p>SSHへのログイン試行ログ(<code>auth.log</code>)を監視します。短時間に何度もログインを失敗するIPアドレスを検知すると、そのIPアドレスからのアクセスをUFWのルールに追加して一定期間ブロックします。</p>
+                </li>
+                <li><strong>Nginx:</strong>
+                    <p>Webサーバーとして、ポート80または443で待ち受け、HTTP/HTTPSリクエストに応じてWebコンテンツを返します。</p>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script src="js/image.js"></script>
+</body>
+</html>
