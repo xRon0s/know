@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Authority</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/authority.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
     <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
         <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
         </nav>
     </header>
 
@@ -32,139 +31,188 @@
             <h2>2. 権限</h2>
             <p>デフォルトのrootユーザーを用いる場合、初期からsudo権限を持っているため権限の付与は必要ない。
             新規のユーザーで環境を作成する場合は以下のコマンドを用いる。</p>
-            <pre><code>sudo usermod -aG sudo [ユーザー名] <span class="code-comment"># 既存のユーザーをsudoグループに追加し、管理者権限を付与する</span></code></pre>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo usermod -aG sudo [ユーザー名] <span class="code-comment"># 既存のユーザーをsudoグループに追加し、管理者権限を付与する</span></code>
+                </div>
+            </div>
             <p>(確認用コマンド)</p>
-            <pre><code>groups [ユーザー名] <span class="code-comment"># ユーザーが所属するグループを確認する</span>
-<span class="code-comment"># sudoが含まれていることを確認する</span></code></pre>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>groups [ユーザー名] <span class="code-comment"># ユーザーが所属するグループを確認する</span>
+<span class="code-comment"># sudoが含まれていることを確認する</span></code>
+                </div>
+            </div>
         </section>
         <section>
             <h2>3. SSH接続</h2>
             <p>左上のラズパイアイコンからPreferences → Raspberry Pi Configuration の順にクリックするとRaspberry Pi Configurationが開くので、Interfacesをクリックし、SSHのトグルスイッチをクリックしてSSH接続を有効化します。</p>
             <p>SSH接続のために、鍵認証を設定します。以下のコマンドでed25519の鍵を生成します。（質問には全てEnterで答える）</p>
-            <pre><code>ssh-keygen -t ed25519 <span class="code-comment"># ed25519方式のSSHキーペア（公開鍵と秘密鍵）を生成する</span></code></pre>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>ssh-keygen -t ed25519 <span class="code-comment"># ed25519方式のSSHキーペア（公開鍵と秘密鍵）を生成する</span></code>
+                </div>
+            </div>
             <p>root直下の.sshフォルダに公開鍵と秘密鍵が生成される。生成した公開鍵を転送・登録するために以下のコマンドを用いる。</p>
-            <pre><code>ssh-copy-id -i ~/.ssh/id_ed25519.pub r23093@192.168.1.10 <span class="code-comment"># 公開鍵をリモートホストにコピーして、鍵認証を設定する</span></code></pre>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>ssh-copy-id -i ~/.ssh/id_ed25519.pub r23093@192.168.1.10 <span class="code-comment"># 公開鍵をリモートホストにコピーして、鍵認証を設定する</span></code>
+                </div>
+            </div>
             <p>もし、.ssh等などのフォルダ、ファイルが生成されていない場合、以下のコマンド等を用いて認証鍵を配置する。</p>
-            <pre><code>mkdir -p ~/.ssh <span class="code-comment"># .sshディレクトリを作成する（-pは親ディレクトリも同時に作成するオプション）</span>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>mkdir -p ~/.ssh <span class="code-comment"># .sshディレクトリを作成する（-pは親ディレクトリも同時に作成するオプション）</span>
 cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys <span class="code-comment"># 公開鍵をauthorized_keysファイルに追記する</span>
-chmod 600 ~/.ssh/authorized_keys <span class="code-comment"># authorized_keysファイルの権限を所有者のみ読み書き可能に設定する</span></code></pre>
+chmod 600 ~/.ssh/authorized_keys <span class="code-comment"># authorized_keysファイルの権限を所有者のみ読み書き可能に設定する</span></code>
+                </div>
+            </div>
             <p>ブルートフォースアタックを防ぐために、ログインが可能かを確認した後にパスワードでのログインを禁止する。今回は別PCを用いなかったため、自分自身に接続テストする。以下のコマンドを用いてSSH接続を確認する。</p>
-            <pre><code>ssh r23093@localhost <span class="code-comment"># 自分自身（localhost）にSSH接続を試みる</span>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>ssh r23093@localhost <span class="code-comment"># 自分自身（localhost）にSSH接続を試みる</span>
 <span class="code-comment"># 新しいコマンドプロンプトで実行する</span>
-ssh -p 2222 username@192.168.1.10 <span class="code-comment"># 指定したポート番号でSSH接続を試みる</span></code></pre>
-            <p>問題が無ければ、以下のコマンドを用いてパスワードでのログインを禁止する。</p>
-            <pre><code>sudo nano /etc/ssh/sshd_config <span class="code-comment"># SSHサーバーの設定ファイルを開く</span></code></pre>
-            <p><code>sshd_config</code>ファイル内で、以下の項目を見つけて修正、または追記します。</p>
-            <pre><code><span class="code-comment"># ポート番号を変更 (例: 2222)</span>
+ssh -p 2222 username@192.168.1.10 <span class="code-comment"># 指定したポート番号でSSH接続を試みる</span></code>
+                </div>
+            </div>
+            <p>問題が無ければ、サーバー側のSSH設定を変更し、セキュリティをさらに強化します。</p>
+            <div class="config-block">
+                <div class="config-title">/etc/ssh/sshd_config</div>
+                <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
+# ポート番号を変更 (例: 22 -> 2222)
 Port 2222
 
-<span class="code-comment"># パスワード認証を無効化</span>
-PasswordAuthentication no
-
-<span class="code-comment"># rootユーザーでのログインを禁止</span>
-PermitRootLogin no</code></pre>
-            <h4>参考: sshd_config の設定内容（抜粋）</h4>
-            <p>以下は、セキュリティを考慮した<code>sshd_config</code>の推奨設定例です。必要に応じて適用してください。</p>
-            <pre><code># This is the sshd server system-wide configuration file.
-# ... (一部省略) ...
-
-Port 2222
-#AddressFamily any
-#ListenAddress 0.0.0.0
-#ListenAddress ::
-
-#HostKey /etc/ssh/ssh_host_rsa_key
-#HostKey /etc/ssh/ssh_host_ecdsa_key
-#HostKey /etc/ssh/ssh_host_ed25519_key
-
-# Ciphers and keying
-#RekeyLimit default none
-
-# Logging
-#SyslogFacility AUTH
-#LogLevel INFO
-
-# Authentication:
-#LoginGraceTime 2m
+# rootユーザーでのログインを禁止
 PermitRootLogin no
-#StrictModes yes
-#MaxAuthTries 3
-#MaxSessions 10
 
-PubkeyAuthentication yes
-
-# Expect .ssh/authorized_keys2 to be disregarded by default in future.
-#AuthorizedKeysFile	.ssh/authorized_keys .ssh/authorized_keys2
-
-#AuthorizedPrincipalsFile none
-
-#AuthorizedKeysCommand none
-#AuthorizedKeysCommandUser nobody
-
-# For this to work you will also need host keys in /etc/ssh/ssh_known_hosts
-#HostbasedAuthentication no
-#IgnoreUserKnownHosts no
-#IgnoreRhosts yes
-
-# To disable tunneled clear text passwords, change to no here!
+# パスワード認証を無効化
 PasswordAuthentication no
-#PermitEmptyPasswords no
 
-# Change to yes to enable challenge-response passwords (beware issues with
-# some PAM modules and threads)
-ChallengeResponseAuthentication no
+<span class="code-comment"># --- ファイル情報 ---</span>
+<span class="code-comment"># 所有者: root:root</span>
+<span class="code-comment"># 権限: 600 (-rw-------)</span>
+</div>
+            </div>
+            <p>設定が完了したら、SSHサービスを再起動して設定を反映させます。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo systemctl restart sshd</code>
+                </div>
+            </div>
+            <p><strong>注意:</strong> この設定変更後、パスワードでのログインはできなくなります。また、SSH接続時のポート番号が変更されます。</p>
 
-# ... (一部省略) ...
-
-# Allow client to pass locale environment variables
-AcceptEnv LANG LC_*
-
-# override default of no subsystems
-Subsystem	sftp	/usr/lib/openssh/sftp-server
-
-# Example of overriding settings on a per-user basis
-#Match User anoncvs
-#	X11Forwarding no
-#	AllowTcpForwarding no
-#	PermitTTY no
-#	ForceCommand cvs server
-</code></pre>
-            <p>設定が完了したら、<code>Ctrl+O</code>で保存、<code>Ctrl+X</code>でファイルを閉じ、SSHサービスを再起動して設定を反映させます。</p>
-            <pre><code>sudo systemctl restart sshd</code></pre>
-            <p>その後、新しいコマンドプロンプトを開き以下のコマンドで接続テストをします。</p>
-            <pre><code><span class="code-comment"># 接続テスト（ポート番号に合わせて -p をつける）</span>
-ssh -p 2222 username@192.168.1.10 <span class="code-comment"># 変更後のポート番号でSSH接続を試みる</span></code></pre>
-            <p>ssh接続のコマンドを簡略化するために、以下のコマンドを実行し設定ファイルを編集する。</p>
-            <pre><code>nano ~/.ssh/config <span class="code-comment"># SSHクライアントの設定ファイルを開く (sudoは不要)</span></code></pre>
-            <p><code>config</code>ファイルに以下のように記述します。</p>
-            <pre><code><span class="code-comment"># 接続設定を記述</span>
-Host myserver
-    HostName 192.168.1.10
-    User username
+            <h3>3.4. 接続の簡略化</h3>
+            <p>毎回ポート番号やユーザー名を入力するのは手間なので、クライアントPCの<code>~/.ssh/config</code>ファイルを編集して接続情報を保存します。</p>
+            <div class="config-block">
+                <div class="config-title">~/.ssh/config (クライアントPC側)</div>
+                <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
+Host raspi-server
+    HostName raspi-server.local
+    User new_username
     Port 2222
-    IdentityFile ~/.ssh/id_ed25519</code></pre>
-            <p>以下のコマンドを試し、SSH接続ができるか試す。問題が無ければSSH接続は完了している。</p>
-            <pre><code>ssh myserver <span class="code-comment"># 設定したエイリアス名でSSH接続を試みる</span></code></pre>
+    IdentityFile ~/.ssh/id_ed25519
+</div>
+            </div>
+            <p>これで、以下の簡単なコマンドで接続できるようになります。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>ssh raspi-server</code>
+                </div>
+            </div>
         </section>
         <section>
             <h2>4. ファイアウォール</h2>
-            <p>UFWを用いてポート開放の設定をする。以下のコマンドをそれぞれ実行し、UFWをインストールする。</p>
-            <pre><code>sudo apt update <span class="code-comment"># パッケージリストを更新</span>
-sudo apt install ufw <span class="code-comment"># UFW（Uncomplicated Firewall）をインストール</span>
-
-sudo ufw status <span class="code-comment"># UFWの状態を確認する</span></code></pre>
-            <p>デフォルトの設定として、全てのincomingを拒否しておく。以下のコマンドを用いてincomingの設定を変更する。</p>
-            <pre><code>sudo ufw default deny incoming <span class="code-comment"># デフォルトで全ての外部からの受信（incoming）を拒否する</span></code></pre>
-            <p>また、SSH接続とwebサーバーを有効化したいので、以下のコマンドを用いて2222,80,443番のアドレスを開放する。今回は2222番ポートを使用しているため、20番を開放するコマンドでは不十分です。</p>
-            <pre><code>sudo ufw allow 2222/tcp <span class="code-comment"># SSH接続のために2222番ポートのTCP通信を許可する</span>
-sudo ufw allow http <span class="code-comment"># Webサーバーのためにhttp（80番ポート）を許可する</span>
-sudo ufw allow https <span class="code-comment"># Webサーバーのためにhttps（443番ポート）を許可する</span></code></pre>
-            <p>設定が完了したら以下のコマンドを用いて設定を有効化し状態を確認する。</p>
-            <pre><code>sudo ufw enable <span class="code-comment"># UFWを有効化する</span>
-sudo ufw status verbose <span class="code-comment"># UFWの詳細な状態（ルール一覧など）を表示する</span></code></pre>
+            <p>UFW (Uncomplicated Firewall) を用いて、サーバーへのアクセスを制御します。デフォルトですべての受信を拒否し、必要なポートのみを許可します。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo apt install ufw -y <span class="code-comment"># UFWをインストール</span>
+sudo ufw default deny incoming <span class="code-comment"># デフォルトで全ての受信を拒否</span>
+sudo ufw default allow outgoing <span class="code-comment"># 全ての送信は許可</span></code>
+                </div>
+            </div>
+            <p>次に、SSH接続とWebサーバー用のポートを開放します。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo ufw allow 2222/tcp <span class="code-comment"># SSH接続用に変更したポートを許可</span>
+sudo ufw allow http <span class="code-comment"># Webサーバー用に80番ポート(HTTP)を許可</span>
+sudo ufw allow https <span class="code-comment"># Webサーバー用に443番ポート(HTTPS)を許可</span></code>
+                </div>
+            </div>
+            <p>最後に、UFWを有効化して設定を適用します。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo ufw enable <span class="code-comment"># UFWを有効化</span>
+sudo ufw status verbose <span class="code-comment"># 詳細な状態を確認</span></code>
+                </div>
+            </div>
         </section>
     </main>
-
-    <script src="js/authority.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

@@ -4,27 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Homepage</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/homepage.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
+    <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
+        <nav>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
+        </nav>
+    </header>
+
     <div id="opening-animation">
         <h1>Welcome</h1>
     </div>
-
-    <header>
-        <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
-        </nav>
-    </header>
 
     <main>
         <section>
@@ -44,16 +43,59 @@
         <section>
             <h2>ページ一覧</h2>
             <ul class="page-links">
-                <li><a href="goals.html"><h3>Goals</h3><p>このサーバー構築の最終的な目標を定義します。</p></a></li>
-                <li><a href="image.html"><h3>Image</h3><p>サーバーの全体構成図と通信の流れを視覚化します。</p></a></li>
-                <li><a href="preparation.html"><h3>Preparation</h3><p>OSのインストールから初期設定までを解説します。</p></a></li>
-                <li><a href="authority.html"><h3>Authority</h3><p>ユーザー権限、SSH鍵認証、ファイアウォール設定について解説します。</p></a></li>
-                <li><a href="web.html"><h3>Web</h3><p>Fail2banによるセキュリティ強化とNginxの導入について解説します。</p></a></li>
-                <li><a href="trouble.html"><h3>Troubleshooting</h3><p>構築中によくある問題とその解決策をまとめます。</p></a></li>
+                <li>
+                    <a href="goals.html">
+                        <div>
+                            <h3>目標</h3>
+                            <p>このプロジェクトで達成する具体的な目標について説明します。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="image.html">
+                        <div>
+                            <h3>全体構成図</h3>
+                            <p>サーバーの構成とネットワークの流れを視覚的に解説します。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="preparation.html">
+                        <div>
+                            <h3>OS準備</h3>
+                            <p>Raspberry Pi OSのインストールと初期設定の手順です。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="authority.html">
+                        <div>
+                            <h3>権限/SSH/FW設定</h3>
+                            <p>ユーザー権限、SSHの鍵認証、ファイアウォールの設定方法です。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="web.html">
+                        <div>
+                            <h3>堅牢化/Webサーバー</h3>
+                            <p>Fail2banによる不正アクセス対策とNginxの導入手順です。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="trouble.html">
+                        <div>
+                            <h3>トラブルシューティング</h3>
+                            <p>構築中に発生しがちな問題とその解決策をまとめています。</p>
+                        </div>
+                    </a>
+                </li>
             </ul>
         </section>
     </main>
 
     <script src="js/homepage.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

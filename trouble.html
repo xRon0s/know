@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Troubleshooting</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/trouble.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
     <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
         <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
         </nav>
     </header>
 
@@ -86,8 +85,167 @@
                 </ul>
             </li>
         </ul>
+        <section>
+            <h2>SSH接続トラブルシューティング</h2>
+            <section>
+                <h3>1. "Host key verification failed" エラー</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p>クライアントPCの<code>~/.ssh/known_hosts</code>ファイルから、古いホストキー情報を削除する必要があります。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">bash (クライアントPC)</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>ssh-keygen -R raspi-server.local</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>2. UFWを有効にしたらSSH接続できなくなった</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p>UFWでSSH用のポート（この解説では2222番）を許可し忘れている可能性があります。一度UFWを無効にしてから設定を再確認します。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo ufw disable <span class="code-comment"># 一時的に無効化</span>
+sudo ufw allow 2222/tcp <span class="code-comment"># SSHポートを許可</span>
+sudo ufw enable <span class="code-comment"># 再度有効化</span></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>3. Nginxをインストールしたが、Webページが表示されない</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p>Nginxが起動していないか、ファイアウォールでブロックされている可能性があります。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo systemctl status nginx <span class="code-comment"># Nginxのステータス確認</span>
+sudo ufw status <span class="code-comment"># ファイアウォールの設定確認 (http, httpsが許可されているか)</span></code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>4. Fail2banで自分自身がブロックされてしまった</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p><code>jail.local</code>に自分のIPアドレスをホワイトリストとして登録します。まず、ブロックを解除し、設定ファイルに追記します。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo fail2ban-client unban --all <span class="code-comment"># 全てのIPのBANを解除</span></code>
+                            </div>
+                        </div>
+                        <p>次に <code>/etc/fail2ban/jail.local</code> を編集します。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo nano /etc/fail2ban/jail.local</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>5. パスワード認証でログインできなくなった</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p><code>/etc/ssh/sshd_config</code>で<code>PasswordAuthentication no</code>を設定したためです。これは意図した動作ですが、もしパスワード認証に戻したい場合は、この行を<code>yes</code>に変更し、SSHサービスを再起動します。ただし、セキュリティは低下します。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo systemctl restart sshd</code>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>6. ユーザーのsudo権限がないと表示される</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p>ユーザーが<code>sudo</code>グループに正しく追加されていない可能性があります。<code>usermod</code>コマンドで再度追加します。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>sudo usermod -aG sudo your_username</code>
+                            </div>
+                        </div>
+                        <p>変更を反映させるには、一度ログアウトして再ログインする必要があります。</p>
+                    </div>
+                </div>
+            </section>
+            <section>
+                <h3>7. "apt update" でエラーが出る</h3>
+                <div class="config-block">
+                    <div class="config-title">解決策</div>
+                    <div class="config-content">
+                        <p>ネットワーク接続に問題があるか、リポジトリのサーバーが一時的にダウンしている可能性があります。まずネットワーク接続を確認してください。</p>
+                        <div class="command-prompt">
+                            <div class="command-prompt-header">
+                                <div class="command-prompt-buttons">
+                                    <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                                </div>
+                                <div class="command-prompt-title">terminal</div>
+                            </div>
+                            <div class="command-prompt-body">
+                                <code>ping 8.8.8.8</code>
+                            </div>
+                        </div>
+                        <p>接続に問題がなければ、しばらく待ってから再度試すか、<code>/etc/apt/sources.list</code>のミラーサーバーを変更することを検討します。</p>
+                    </div>
+                </div>
+            </section>
+        </section>
     </main>
-
-    <script src="js/trouble.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

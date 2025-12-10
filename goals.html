@@ -4,37 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Goals</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/goals.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
     <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
         <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
         </nav>
     </header>
 
     <main>
-        <h1>Goals</h1>
+        <h1>目標と完成条件</h1>
         <section>
-            <h2>サーバー構築の目標</h2>
-            <p>このプロジェクトの目標は、以下の要件を満たすセキュアで実用的なWebサーバーをRaspberry Pi上に構築することです。</p>
-            <ul>
-                <li><strong>セキュリティ:</strong> 外部からの不正アクセスを防ぐため、基本的なセキュリティ設定（ファイアウォール、鍵認証、不正侵入検知）を施す。</li>
-                <li><strong>安定稼働:</strong> Webサーバーとして、基本的なコンテンツを安定して配信できる環境を整える。</li>
-                <li><strong>学習:</strong> サーバー構築の一連のプロセス（OS設定、ネットワーク、セキュリティ、Webサーバーソフトウェア）を実践を通して学ぶ。</li>
-            </ul>
+            <h2>1. 目標</h2>
+            <p>ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることで強固なwebサーバーを構築する。</p>
+        </section>
+        <section>
+            <h2>2. 完成条件</h2>
+            <p>ブラウザで <code>http://[ラズパイのIP]</code> にアクセスし、"Welcome to nginx" の表記がでる。</p>
         </section>
     </main>
-
-    <script src="js/goals.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

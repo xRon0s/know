@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Preparation</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/preparation.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
     <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
         <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
         </nav>
     </header>
 
@@ -29,33 +28,76 @@
             <p>Raspberry PiにmicroSDカードを挿し、ディスプレイとモニターに接続して電源を付ける。</p>
         </section>
         <section>
-            <h2>2. 初期設定</h2>
-            <p>初期ウィザードが表示されるためNextをクリックする。</p>
-            <p>Set Countryが表示されるため以下の通り設定を変更してNextをクリックする。</p>
-            <pre><code>Country : Japan
-Language : Japanese
-Timezone : Tokyo
-✓Use US keyboard</code></pre>
-            <p>Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックする。ここでは学籍番号をユーザー名に設定した。</p>
-            <pre><code>Enter username : r23093
-Enter password : PASSWORD
-Confirm password : PASSWORD</code></pre>
-            <p>Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックする。</p>
-            <p>Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックする。</p>
-            <p>Update Softwareの画面では、OSをアップデートするか聞かれるのでNextボタンをクリックします。ここでSkipをクリックするとOSを日本語化するファイルがインストールされない。</p>
-            <p>セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。</p>
-            <p>右上のWiFiマークから接続するネットワークを選択し、WiFiに接続する。</p>
+            <h2>2. OSの初期設定</h2>
+            <p>OSのインストールが完了したら、基本的な設定を行います。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">bash</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo apt update && sudo apt upgrade -y <span class="code-comment"># パッケージリストの更新とアップグレード</span></code>
+                </div>
+            </div>
+            <p>次に、タイムゾーンとロケールを設定します。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">bash</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo timedatectl set-timezone Asia/Tokyo <span class="code-comment"># タイムゾーンを東京に設定</span>
+sudo localectl set-locale LANG=ja_JP.UTF-8 <span class="code-comment"># ロケールを日本語に設定</span></code>
+                </div>
+            </div>
+            <p>最後に、ホスト名を変更してネットワーク上で識別しやすくします。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">bash</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo hostnamectl set-hostname raspi-server <span class="code-comment"># ホスト名をraspi-serverに変更</span></code>
+                </div>
+            </div>
+            <p>変更を反映させるため、一度再起動します。</p>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">bash</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo reboot</code>
+                </div>
+            </div>
         </section>
         <section>
             <h2>3. 日本語入力</h2>
             <p>この状態のRaspberry Piでは日本語入力ができない。日本語入力のためにFcitx、Mozcをインターネット上からダウンロードしてインストールする。
             画面上部のLXTerminalアイコンをクリックしてターミナルウィンドウを開き、以下のコマンドを入力する。</p>
-            <pre><code>sudo apt update <span class="code-comment"># パッケージリストを最新の状態に更新する</span>
-sudo apt install fcitx-mozc -y <span class="code-comment"># 日本語入力メソッドFcitxとMozcをインストールする (-yは確認メッセージに自動でyesと答えるオプション)</span></code></pre>
+            <div class="command-prompt">
+                <div class="command-prompt-header">
+                    <div class="command-prompt-buttons">
+                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
+                    </div>
+                    <div class="command-prompt-title">terminal</div>
+                </div>
+                <div class="command-prompt-body">
+                    <code>sudo apt update <span class="code-comment"># パッケージリストを最新の状態に更新する</span>
+sudo apt install fcitx-mozc -y <span class="code-comment"># 日本語入力メソッドFcitxとMozcをインストールする (-yは確認メッセージに自動でyesと答えるオプション)</span></code>
+                </div>
+            </div>
             <p>インストールが完了したら、ログアウトメニューからRebootを選択し再起動することで設定が反映される。</p>
         </section>
     </main>
-
-    <script src="js/preparation.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>

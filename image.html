@@ -4,21 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=1.4">
     <link rel="stylesheet" href="css/image.css">
 </head>
 <body>
+    <div class="scroll-indicator"></div>
     <header>
+        <a href="homepage.html" class="logo">RASPI-SEC</a>
         <nav>
-            <ul>
-                <li><a href="homepage.html">Home</a></li>
-                <li><a href="goals.html">Goals</a></li>
-                <li><a href="image.html">Image</a></li>
-                <li><a href="preparation.html">Preparation</a></li>
-                <li><a href="authority.html">Authority</a></li>
-                <li><a href="web.html">Web</a></li>
-                <li><a href="trouble.html">Troubleshooting</a></li>
-            </ul>
+            <a href="goals.html">目標</a>
+            <a href="image.html">構成図</a>
+            <a href="preparation.html">準備</a>
+            <a href="authority.html">権限</a>
+            <a href="web.html">Web設定</a>
+            <a href="trouble.html">トラブル</a>
         </nav>
     </header>
 
@@ -29,23 +28,23 @@
             <div class="mermaid">
 graph TD
     subgraph "インターネット (外部)"
-        Client[クライアントPC]
+        Client["クライアントPC"]
     end
 
     subgraph "ホームネットワーク"
-        Router[ルーター]
+        Router["ルーター"]
         subgraph "Raspberry Pi (サーバー)"
-            UFW[UFW ファイアウォール]
+            UFW["UFW ファイアウォール"]
             subgraph "サービス"
-                SSH[sshd ポート: 2222]
-                Nginx[Nginx ポート: 80, 443]
+                SSH["sshd"]
+                Nginx["Nginx"]
             end
-            Fail2ban[Fail2ban]
+            Fail2ban["Fail2ban"]
         end
     end
 
-    Client -- "SSH接続" -->|ポート: 2222| Router
-    Client -- "Webアクセス" -->|ポート: 80, 443| Router
+    Client -- "SSH (ポート 2222)" --> Router
+    Client -- "Web (ポート 80, 443)" --> Router
 
     Router --> UFW
 
@@ -87,8 +86,10 @@ graph TD
         </section>
     </main>
 
-    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
-    <script src="js/image.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true, theme: 'dark' });
+    </script>
+    <script src="js/main.js"></script>
 </body>
 </html>
