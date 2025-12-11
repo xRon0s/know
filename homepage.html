@@ -27,17 +27,19 @@
 
     <main>
         <section>
-            <h1>Raspberry Pi Server Setup Guide</h1>
-            <p>このサイトは、Raspberry Piを使用してセキュアなWebサーバーを構築するための手順を、備忘録としてまとめたものです。</p>
+            <h1>Raspberry Pi Server Guide</h1>
+            <p>このサイトは、Raspberry Piを使用して環境設定からwebサーバーを構築する手順をまとめたものです。</p>
         </section>
         <section>
             <h2>前提条件</h2>
             <ul>
-                <li>Raspberry Pi 4 Model B</li>
-                <li>microSDカード (32GB以上推奨)</li>
-                <li>ディスプレイ、キーボード、マウス</li>
-                <li>インターネット接続環境 (有線または無線)</li>
-                <li>作業用PC (SSH接続用)</li>
+                <li>対象 OS とバージョン : Raspberry Pi OS (64-bit) / Debian 11 (bullseye)</li>
+                <li>実行環境 : ローカル環境 (Raspberry Pi 400) </li>
+                <li>利用ツール・パッケージ管理手段 : apt, systemd, ufw, fail2ban, nginx</li>
+                <li>ネットワーク条件 : ローカルネットワーク（プライベートIP）</li>
+                <li>httpsの可否 : HTTPS 用いない (HTTP のみ)</li>
+                <br>
+                以下のページにおいて <strong>r23093</strong> は <strong>USERNAME</strong> と置き換える
             </ul>
         </section>
         <section>
@@ -47,7 +49,7 @@
                     <a href="goals.html">
                         <div>
                             <h3>目標</h3>
-                            <p>このプロジェクトで達成する具体的な目標について説明します。</p>
+                            <p>目標と達成条件について説明します。</p>
                         </div>
                     </a>
                 </li>
@@ -62,8 +64,8 @@
                 <li>
                     <a href="preparation.html">
                         <div>
-                            <h3>OS準備</h3>
-                            <p>Raspberry Pi OSのインストールと初期設定の手順です。</p>
+                            <h3>初期設定</h3>
+                            <p>Raspberry Piの初期設定の手順と日本語入力について説明します。</p>
                         </div>
                     </a>
                 </li>
@@ -71,15 +73,15 @@
                     <a href="authority.html">
                         <div>
                             <h3>権限/SSH/FW設定</h3>
-                            <p>ユーザー権限、SSHの鍵認証、ファイアウォールの設定方法です。</p>
+                            <p>ユーザー権限、SSHの鍵認証、ファイアウォールの設定方法について説明します。</p>
                         </div>
                     </a>
                 </li>
                 <li>
                     <a href="web.html">
                         <div>
-                            <h3>堅牢化/Webサーバー</h3>
-                            <p>Fail2banによる不正アクセス対策とNginxの導入手順です。</p>
+                            <h3>セキュリティ/Webサーバー</h3>
+                            <p>Fail2banによる不正アクセス対策とNginxの導入手順について説明します。</p>
                         </div>
                     </a>
                 </li>
@@ -88,6 +90,14 @@
                         <div>
                             <h3>トラブルシューティング</h3>
                             <p>構築中に発生しがちな問題とその解決策をまとめています。</p>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="Siv.html">
+                        <div>
+                            <h3>参考文献</h3>
+                            <p>参考にした資料やリンクを掲載しています。</p>
                         </div>
                     </a>
                 </li>

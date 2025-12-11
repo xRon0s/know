@@ -25,7 +25,7 @@
         <h1>ハードニング</h1>
         <section>
             <h2>1. 概要</h2>
-            <p>ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることでサーバーを強固なものに構築します。Fail2ban以外は環境構築の手順で設定したので、Fail2banの設定を行います。</p>
+            <p>ユーザー管理強化、SSH公開鍵認証、UFW、Fail2banの要素を組み合わせることでサーバーを強固なものに構築します。Fail2ban以外は権限付与等の手順で設定したので、Fail2banの設定を行います。</p>
         </section>
         <section>
             <h2>2. 設定</h2>
@@ -57,27 +57,22 @@
             <div class="config-block">
                 <div class="config-title">/etc/fail2ban/jail.local</div>
                 <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
-[sshd]
-enabled = true
-port    = 2222
-logpath = %(sshd_log)s
-backend = %(sshd_backend)s
-maxretry = 3
-bantime = 1h
+  [DEFAULT]
+  bantime  = 1h # BANする期間を1時間に設定
+  findtime = 10m # 試行を検出する期間を10分に設定
+  maxretry = 5 # 期間内の最大試行回数を5回に設定
+
+  [sshd]
+  enabled  = true # SSHDに対する監視を有効化
+  port     = 2222 # 監視するSSHのポート番号
+  logpath  = /var/log/auth.log # 監視するログファイルのパス
+  backend  = systemd # ログの監視方法
 
 <span class="code-comment"># --- ファイル情報 ---</span>
 <span class="code-comment"># 所有者: root:root</span>
 <span class="code-comment"># 権限: 644 (-rw-r--r--)</span>
 </div>
             </div>
-            <ul>
-                <li><code>enabled = true</code>: SSHの監視を有効にします。</li>
-                <li><code>port = 2222</code>: 変更したSSHポートを指定します。</li>
-                <li><code>logpath = %(sshd_log)s</code>: ログファイルのパスを指定します。</li>
-                <li><code>backend = %(sshd_backend)s</code>: ログの監視方法を指定します。</li>
-                <li><code>maxretry = 3</code>: 最大試行回数を3回に設定します。</li>
-                <li><code>bantime = 1h</code>: BANする期間を1時間に設定します。</li>
-            </ul>
             <p>設定の変更が完了したら、以下のコマンドで設定を適用し状態を確認します。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
@@ -105,7 +100,7 @@ bantime = 1h
                     <code>sudo apt install nginx -y <span class="code-comment"># Nginxをインストール</span></code>
                 </div>
             </div>
-            <p>インストールが完了したら、ブラウザで <code>http://[ラズパイのIP]</code> にアクセスし、"Welcome to nginx" の表記がでるか確認します。</p>
+            <p>インストールが完了したら、ブラウザで <strong><code>http://[ラズパイのIP]</code></strong> にアクセスし、"Welcome to nginx" の表記がでるか確認します。</p>
         </section>
     </main>
     <script src="js/main.js"></script>

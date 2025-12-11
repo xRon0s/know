@@ -29,44 +29,31 @@
         </section>
         <section>
             <h2>2. OSの初期設定</h2>
-            <p>OSのインストールが完了したら、基本的な設定を行います。</p>
-            <div class="command-prompt">
-                <div class="command-prompt-header">
-                    <div class="command-prompt-buttons">
-                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
-                    </div>
-                    <div class="command-prompt-title">bash</div>
-                </div>
-                <div class="command-prompt-body">
-                    <code>sudo apt update && sudo apt upgrade -y <span class="code-comment"># パッケージリストの更新とアップグレード</span></code>
-                </div>
+            <p>初期ウィザードが表示されるためNextをクリックする。</p>
+            <p>Set Countryが表示されるため以下の通り設定を変更してNextをクリックする。</p>
+            <div class="config-block">
+                <div class="config-title">Set Country</div>
+                <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
+Country : Japan
+Language : Japanese
+Timezone : Tokyo
+✓Use US Keyboard
+</div>
             </div>
-            <p>次に、タイムゾーンとロケールを設定します。</p>
-            <div class="command-prompt">
-                <div class="command-prompt-header">
-                    <div class="command-prompt-buttons">
-                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
-                    </div>
-                    <div class="command-prompt-title">bash</div>
-                </div>
-                <div class="command-prompt-body">
-                    <code>sudo timedatectl set-timezone Asia/Tokyo <span class="code-comment"># タイムゾーンを東京に設定</span>
-sudo localectl set-locale LANG=ja_JP.UTF-8 <span class="code-comment"># ロケールを日本語に設定</span></code>
-                </div>
+            <p>Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックする。ここでは学籍番号をユーザー名に設定した。</p>
+            <div class="config-block">
+                <div class="config-title">Create User</div>
+                <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
+Enter username : r23093
+Enter password : ********  
+Confirm password : ********
+</div>
             </div>
-            <p>最後に、ホスト名を変更してネットワーク上で識別しやすくします。</p>
-            <div class="command-prompt">
-                <div class="command-prompt-header">
-                    <div class="command-prompt-buttons">
-                        <span class="close"></span><span class="minimize"></span><span class="maximize"></span>
-                    </div>
-                    <div class="command-prompt-title">bash</div>
-                </div>
-                <div class="command-prompt-body">
-                    <code>sudo hostnamectl set-hostname raspi-server <span class="code-comment"># ホスト名をraspi-serverに変更</span></code>
-                </div>
-            </div>
-            <p>変更を反映させるため、一度再起動します。</p>
+            <p>Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックする。</p>
+            <p>Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックする。</p>
+            <p>Update Softwareの画面では、OSをアップデートするか聞かれるのでNextボタンをクリックします。ここでSkipをクリックするとOSを日本語化するファイルがインストールされない。</p>
+            <p>セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。右上のWiFiマークから接続するネットワークを選択し、WiFiに接続する。</p>
+            <p>ターミナルウィンドウを開き、以下のコマンドを入力してOSを最新の状態にアップデートする。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
                     <div class="command-prompt-buttons">

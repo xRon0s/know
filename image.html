@@ -31,7 +31,7 @@ graph TD
         Client["クライアントPC"]
     end
 
-    subgraph "ホームネットワーク"
+    subgraph "プライベートネットワーク(内部)"
         Router["ルーター"]
         subgraph "Raspberry Pi (サーバー)"
             UFW["UFW ファイアウォール"]
@@ -54,7 +54,7 @@ graph TD
     Fail2ban -- "ログ監視" --> SSH
     Fail2ban -- "不正アクセスをブロック" --> UFW
             </div>
-            <p style="text-align: center; font-size: 0.9em; color: #666;">(この図はMermaid.jsによって描画されています)</p>
+            <p style="text-align: center; font-size: 0.9em; color: #666;">Mermaid.jsによって描画</p>
         </section>
         <section>
             <h2>通信経路とポート設計</h2>

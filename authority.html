@@ -115,14 +115,20 @@ ssh -p 2222 username@192.168.1.10 <span class="code-comment"># 指定したポ�
             <div class="config-block">
                 <div class="config-title">/etc/ssh/sshd_config</div>
                 <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
-# ポート番号を変更 (例: 22 -> 2222)
-Port 2222
+  Port 2222                 # SSHのポート番号を2222に変更
+  #AddressFamily any         # (コメントアウト解除や確認: IPv4/IPv6のどちらも許可)
+  ListenAddress 0.0.0.0       # (すべてのインターフェースからの接続を許可)
+  
+  PermitRootLogin no          # rootユーザーでのログインを禁止
+  PasswordAuthentication no   # パスワード認証を無効化
 
-# rootユーザーでのログインを禁止
-PermitRootLogin no
+  # 鍵認証を有効化していることを確認
+  PubkeyAuthentication yes
+  
+  # authorized_keysのパスを確認
+  AuthorizedKeysFile      .ssh/authorized_keys
 
-# パスワード認証を無効化
-PasswordAuthentication no
+  # Subsystem sftp /usr/lib/ssh/sftp-server # (確認: コメントアウトされていないことを確認)
 
 <span class="code-comment"># --- ファイル情報 ---</span>
 <span class="code-comment"># 所有者: root:root</span>
@@ -148,11 +154,11 @@ PasswordAuthentication no
             <div class="config-block">
                 <div class="config-title">~/.ssh/config (クライアントPC側)</div>
                 <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
-Host raspi-server
-    HostName raspi-server.local
-    User new_username
-    Port 2222
-    IdentityFile ~/.ssh/id_ed25519
+  Host myserver # 接続のエイリアス名
+  HostName 192.168.1.10 # 接続先ホスト名（IPアドレス）
+  User username # ユーザー名
+  Port 2222 # ポート番号
+  IdentityFile ~/.ssh/id_ed25519 # 使用する秘密鍵のパス
 </div>
             </div>
             <p>これで、以下の簡単なコマンドで接続できるようになります。</p>
