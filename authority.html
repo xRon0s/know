@@ -25,11 +25,11 @@
         <h1>権限・鍵認証・ファイアウォール</h1>
         <section>
             <h2>1. ユーザー作成</h2>
-            <p>今回のサーバー作成においては追加でユーザーを作成する必要が無いため、ユーザーは追加しない。</p>
+            <p>今回のサーバー作成においては追加でユーザーを作成する必要が無いため、ユーザーは追加しません。</p>
         </section>
         <section>
             <h2>2. 権限</h2>
-            <p>デフォルトのrootユーザーを用いる場合、初期からsudo権限を持っているため権限の付与は必要ない。
+            <p>デフォルトのrootユーザーを用いる場合、初期からsudo権限を持っているため権限の付与は必要ありません。
             新規のユーザーで環境を作成する場合は以下のコマンドを用いる。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
@@ -71,7 +71,7 @@
                     <code>ssh-keygen -t ed25519 <span class="code-comment"># ed25519方式のSSHキーペア（公開鍵と秘密鍵）を生成する</span></code>
                 </div>
             </div>
-            <p>root直下の.sshフォルダに公開鍵と秘密鍵が生成される。生成した公開鍵を転送・登録するために以下のコマンドを用いる。</p>
+            <p>root直下の.sshフォルダに公開鍵と秘密鍵が生成される。生成した公開鍵を転送・登録するために以下のコマンドを用います。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
                     <div class="command-prompt-buttons">
@@ -97,7 +97,7 @@ cat ~/.ssh/id_ed25519.pub >> ~/.ssh/authorized_keys <span class="code-comment">#
 chmod 600 ~/.ssh/authorized_keys <span class="code-comment"># authorized_keysファイルの権限を所有者のみ読み書き可能に設定する</span></code>
                 </div>
             </div>
-            <p>ブルートフォースアタックを防ぐために、ログインが可能かを確認した後にパスワードでのログインを禁止する。今回は別PCを用いなかったため、自分自身に接続テストする。以下のコマンドを用いてSSH接続を確認する。</p>
+            <p>ブルートフォースアタックを防ぐために、ログインが可能かを確認した後にパスワードでのログインを禁止します。今回は別PCを用いなかったため、自分自身に接続テストします。以下のコマンドを用いてSSH接続を確認します。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
                     <div class="command-prompt-buttons">

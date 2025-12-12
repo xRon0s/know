@@ -25,12 +25,12 @@
         <h1>初期設定・環境構築</h1>
         <section>
             <h2>1. OS起動</h2>
-            <p>Raspberry PiにmicroSDカードを挿し、ディスプレイとモニターに接続して電源を付ける。</p>
+            <p>Raspberry PiにmicroSDカードを挿し、ディスプレイとモニターに接続して電源を付けます。</p>
         </section>
         <section>
             <h2>2. OSの初期設定</h2>
-            <p>初期ウィザードが表示されるためNextをクリックする。</p>
-            <p>Set Countryが表示されるため以下の通り設定を変更してNextをクリックする。</p>
+            <p>初期ウィザードが表示されるためNextをクリックします。</p>
+            <p>Set Countryが表示されるため以下の通り設定を変更してNextをクリックします。</p>
             <div class="config-block">
                 <div class="config-title">Set Country</div>
                 <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
@@ -40,20 +40,20 @@ Timezone : Tokyo
 ✓Use US Keyboard
 </div>
             </div>
-            <p>Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックする。ここでは学籍番号をユーザー名に設定した。</p>
+            <p>Create Userが表示されるためユーザー名とパスワードを任意に設定しNextをクリックします。ここでは学籍番号をユーザー名に設定しました。<br>ここでは、パスワードを 'PASSWORD' と設定します。</p>
             <div class="config-block">
                 <div class="config-title">Create User</div>
                 <div class="config-content"><span class="code-comment"># --- 設定内容 ---</span>
 Enter username : r23093
-Enter password : ********  
-Confirm password : ********
+Enter password : PASSWORD
+Confirm password : PASSWORD
 </div>
             </div>
-            <p>Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックする。</p>
-            <p>Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックする。</p>
+            <p>Select WiFi Networkが開きアクセスポイント一覧が表示されるが、今回は後からWiFiを設定するためSkipをクリックします。</p>
+            <p>Choose BrowserでRaspberry Piにおいて使用したいブラウザを選択し、Nextをクリックします。</p>
             <p>Update Softwareの画面では、OSをアップデートするか聞かれるのでNextボタンをクリックします。ここでSkipをクリックするとOSを日本語化するファイルがインストールされない。</p>
-            <p>セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。右上のWiFiマークから接続するネットワークを選択し、WiFiに接続する。</p>
-            <p>ターミナルウィンドウを開き、以下のコマンドを入力してOSを最新の状態にアップデートする。</p>
+            <p>セットアップが完了し、Launchボタンをクリックすることでデスクトップが表示される。右上のWiFiマークから接続するネットワークを選択し、WiFiに接続します。</p>
+            <p>ターミナルウィンドウを開き、以下のコマンドを入力してOSを最新の状態にアップデートします。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
                     <div class="command-prompt-buttons">
@@ -68,8 +68,8 @@ Confirm password : ********
         </section>
         <section>
             <h2>3. 日本語入力</h2>
-            <p>この状態のRaspberry Piでは日本語入力ができない。日本語入力のためにFcitx、Mozcをインターネット上からダウンロードしてインストールする。
-            画面上部のLXTerminalアイコンをクリックしてターミナルウィンドウを開き、以下のコマンドを入力する。</p>
+            <p>この状態のRaspberry Piでは日本語入力ができない。日本語入力のためにFcitx、Mozcをインターネット上からダウンロードしてインストールします。
+            画面上部のLXTerminalアイコンをクリックしてターミナルウィンドウを開き、以下のコマンドを入力します。</p>
             <div class="command-prompt">
                 <div class="command-prompt-header">
                     <div class="command-prompt-buttons">
@@ -82,7 +82,7 @@ Confirm password : ********
 sudo apt install fcitx-mozc -y <span class="code-comment"># 日本語入力メソッドFcitxとMozcをインストールする (-yは確認メッセージに自動でyesと答えるオプション)</span></code>
                 </div>
             </div>
-            <p>インストールが完了したら、ログアウトメニューからRebootを選択し再起動することで設定が反映される。</p>
+            <p>インストールが完了したら、ログアウトメニューからRebootを選択し再起動することで設定が反映されます。</p>
         </section>
     </main>
     <script src="js/main.js"></script>
